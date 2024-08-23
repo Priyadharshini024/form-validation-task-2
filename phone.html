@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register with phoneNumber</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        padding-top: 150px;
+        background-size: cover;
+        background-position: center;
+        background: url(OIP\ \(1\).jpeg);
+      }
+      .form {
+        border: 2px solid rgba(97, 96, 14, 0.986);
+        border-radius: 10px;
+        padding: 20px;
+      }
+      .error {
+        color: red;
+      }
+    </style>
+</head>
+<body>
+  <div class="form">
+    <form action=" " onsubmit="return validateForm()">
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name"><br><br>
+        <span id="nameError" class="error"></span>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="text" id="email"><br><br>
+        <span id="emailError" class="error"></span>
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password"><br><br>
+        <span id="passwordError" class="error"></span>
+      </div>
+      <div>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword"><br><br>
+        <span id="confirmPasswordError" class="error"></span>
+      </div>
+      <div>
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber" maxlength="10"><br><br>
+        <span id="phoneNumberError" class="error"></span>
+      </div>
+      <div>
+        <label><input type="checkbox" id="checkbox"> Terms and conditions</label><br><br>
+        <span id="termsError" class="error"></span><br>
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('phoneNumber').addEventListener('input', function() {
+      const phoneInput = this.value;
+      const phoneError = document.getElementById('phoneNumberError');
+      
+      // phoneRegex-validate the phone number.
+      if (!/^\d{0,10}$/.test(phoneInput)) {
+        phoneError.textContent = 'Phone number can only contain numbers and must be 10 digits long.';
+      } else if (phoneInput.length < 10) {
+        phoneError.textContent = 'Phone number must be 10 digits long.';
+      } else {
+        phoneError.textContent = '';
+      }
+    });
+
+    function validateForm() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const phoneNumber = document.getElementById('phoneNumber').value;
+      const checkbox = document.getElementById('checkbox').checked;
+
+      document.getElementById('nameError').textContent = '';
+      document.getElementById('emailError').textContent = '';
+      document.getElementById('passwordError').textContent = '';
+      document.getElementById('confirmPasswordError').textContent = '';
+      document.getElementById('phoneNumberError').textContent = '';
+      document.getElementById('termsError').textContent = '';
+
+      let isValid = true;
+
+      if (name.length < 3) {
+        document.getElementById('nameError').textContent = 'Name must be at least 3 characters long';
+        isValid = false;
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById('emailError').textContent = 'Invalid email';
+        isValid = false;
+      }
+
+      if (password.length < 8) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 8 characters long';
+        isValid = false;
+      }
+
+      if (password !== confirmPassword) {
+        document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+        isValid = false;
+      }
+
+      if (phoneNumber.length !== 10 || !/^\d{10}$/.test(phoneNumber)) {
+        document.getElementById('phoneNumberError').textContent = 'Phone number must be 10 digits long and contain only numbers';
+        isValid = false;
+      }
+
+      if (!checkbox) {
+        document.getElementById('termsError').textContent = 'You must agree to the terms and conditions';
+        isValid = false;
+      }
+
+      return isValid;
+    }
+  </script>
+</body>
+</html>
